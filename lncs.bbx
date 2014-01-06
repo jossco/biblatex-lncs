@@ -139,11 +139,8 @@
     {\printnames{author}}%
   \setunit*{\addcolon\space}
   \printfield{title}%
-  \newunit
-  \printlist{publisher}%
-  \iflistundef{location}
-    {}
-    {\addcomma\addspace\printlist{location}}
+  \newunit%
+  \usebibmacro{publisher+location}%
   \printfield{year}%
   \usebibmacro{related}%
   \usebibmacro{finentry}%
