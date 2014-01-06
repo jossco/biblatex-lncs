@@ -55,7 +55,7 @@
 
 
 \DeclareFieldFormat{journaltitle}{#1}
-\DeclareFieldFormat[article,inproceedings]{title}{#1}
+\DeclareFieldFormat[article,inproceedings,incollection]{title}{#1}
 \DeclareFieldFormat{booktitle}{#1}
 \DeclareFieldFormat[article]{pages}{#1}
 \DeclareFieldFormat{year}{(#1)}
@@ -149,7 +149,7 @@
   \usebibmacro{finentry}%
 }
 
-\DeclareBibliographyDriver{inproceedings}{%
+\newbibmacro{incoll/inproc}{%
   \usebibmacro{bibindex}%
   \usebibmacro{begentry}%
   \printnames{author}
@@ -191,8 +191,15 @@
   \usebibmacro{finentry}%
 }
 
+\DeclareBibliographyDriver{inproceedings}{%
+  \usebibmacro{incoll/inproc}%
+}
+
+\DeclareBibliographyDriver{incollection}{%
+  \usebibmacro{incoll/inproc}%
+}
+
 \DeclareBibliographyDriver{proceedings}{PROCEEDINGS}
-\DeclareBibliographyDriver{incollection}{INCOLLECTION}
 \DeclareBibliographyDriver{online}{ONLINE}
 \DeclareBibliographyDriver{misc}{MISC}
 \DeclareBibliographyDriver{thesis}{THESIS}
