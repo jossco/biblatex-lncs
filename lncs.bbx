@@ -159,7 +159,7 @@
   \iffieldundef{series}
     {\iftoggle{lncs:abbrev}
       {\usebibmacro{acronym/booktitle}}
-      {\printfield{booktitle}\addcomma\space}%
+      {\printfield{booktitle}}%
     }%
     {\ifboolexpr{
         test {\iffieldequalstr{series}{LNAI}}
@@ -172,15 +172,14 @@
        \usebibmacro{acronym/booktitle}%
        \printfield{series}\addcomma\addspace
        \iffieldundef{volume}
-         {\iffieldundef{number}{}{vol.\addspace\printfield{number}\addcomma}}
-         {\printfield{volume}\addcomma}%
+         {\iffieldundef{number}{}{vol.\addspace\printfield{number}}}
+         {\printfield{volume}}%
       }%
       {\usebibmacro{acronym/booktitle}%
-       \printfield{series}\addcomma}%
+       \printfield{series}}%
     }
-  \newunit
-  \iffieldundef{pages}{}{\printfield{pages}}
-  \newunit
+  \iffieldundef{pages}{}{\setunit{\addcomma\space}\printfield{pages}}%
+  \newunit%
   \usebibmacro{publisher+location}%
   \setunit{\space}%
   \printfield{year}%
