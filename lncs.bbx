@@ -192,7 +192,48 @@
 }
 
 \DeclareBibliographyDriver{proceedings}{PROCEEDINGS}
-\DeclareBibliographyDriver{incollection}{INCOLLECTION}
+\DeclareBibliographyDriver{incollection}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \printnames{author}
+  \setunit*{\addcolon\space}
+  \printfield[article]{title}
+  \newunit\newblock
+  \printtext{In:}
+  \printnames{editor}
+  \newunit
+  \iffieldundef{series}
+    {\iftoggle{lncs:abbrev}
+      {\usebibmacro{acronym/booktitle}}
+      {\printfield{booktitle}\addcomma\space}%
+    }%
+    {\ifboolexpr{
+        test {\iffieldequalstr{series}{LNAI}}
+        or
+        test {\iffieldequalstr{series}{LNCS}}
+        or
+        test {\iffieldequalstr{series}{LNBIP}}
+      }
+      {\settoggle{lncs:lncs}{true}%
+       \usebibmacro{acronym/booktitle}%
+       \printfield{series}\addcomma\addspace
+       \iffieldundef{volume}
+         {\iffieldundef{number}{}{vol.\addspace\printfield{number}\addcomma}}
+         {\printfield{volume}\addcomma}%
+      }%
+      {\usebibmacro{acronym/booktitle}%
+       \printfield{series}\addcomma}%
+    }
+  \newunit
+  \iffieldundef{pages}{}{\printfield{pages}}
+  \newunit
+  \usebibmacro{publisher+location}%
+  \setunit{\space}%
+  \printfield{year}%
+  \usebibmacro{related}%
+  \usebibmacro{finentry}%
+}
+
 \DeclareBibliographyDriver{online}{ONLINE}
 \DeclareBibliographyDriver{misc}{MISC}
 \DeclareBibliographyDriver{thesis}{THESIS}
