@@ -37,7 +37,7 @@
   {\endlist}
   {\item}
 
-\DeclareSourcemap{
+\DeclareStyleSourcemap{
   \maps[datatype=bibtex]{
     \map{
       \step[fieldsource=series,
@@ -55,7 +55,7 @@
 
 
 \DeclareFieldFormat{journaltitle}{#1}
-\DeclareFieldFormat[article,book,inproceedings,online,report,thesis]{title}{#1}
+\DeclareFieldFormat[article,book,inproceedings,incollection, online,report,thesis]{title}{#1}
 \DeclareFieldFormat{booktitle}{#1}
 \DeclareFieldFormat[article]{pages}{#1}
 \DeclareFieldFormat{year}{(#1)}
@@ -96,7 +96,7 @@
   \iffieldundef{acronym}
     {\printfield{booktitle}}
     {\printfield{acronym}}%
-    \addcomma\addspace
+    \addperiod\addspace
 }
 
 \newbibmacro{publisher+location}{%
@@ -159,11 +159,8 @@
     {\printnames{author}}%
   \setunit*{\labelnamepunct}\newblock%
   \usebibmacro{title}%
-  \newunit
-  \printlist{publisher}%
-  \iflistundef{location}
-    {}
-    {\addcomma\addspace\printlist{location}}
+  \newunit%
+  \usebibmacro{publisher+location}%
   \printfield{year}%
   \newunit\newblock
   \usebibmacro{addendum+pubstate}%
@@ -177,7 +174,7 @@
   \usebibmacro{finentry}%
 }
 
-\DeclareBibliographyDriver{inproceedings}{%
+\newbibmacro{incoll/inproc}{%
   \usebibmacro{bibindex}%
   \usebibmacro{begentry}%
   \printnames{author}
@@ -210,11 +207,10 @@
       {\usebibmacro{acronym/booktitle}%
        \printfield{series}}%
     }
-  \newunit
-  \iffieldundef{pages}{}{\printfield{pages}}
-  \newunit
+  \iffieldundef{pages}{}{\setunit{\addcomma\space}\printfield{pages}}%
+  \newunit%
   \usebibmacro{publisher+location}%
-  \setunit*{\space}%
+  \setunit{\addspace}%
   \printfield{year}%
   \newunit\newblock
   \usebibmacro{addendum+pubstate}%
@@ -249,7 +245,6 @@
   \iffieldundef{pages}{}{\addcomma\addspace\printfield{pages}}
   \newunit
   \usebibmacro{publisher+location}%
-  \setunit{\space}%
   \printfield{year}%
   \newunit\newblock
   \usebibmacro{addendum+pubstate}%
