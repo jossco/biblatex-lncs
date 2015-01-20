@@ -201,7 +201,7 @@
       {\settoggle{lncs:lncs}{true}%
        \usebibmacro{acronym/booktitle}%
        \printfield{series}
-       \newunit
+       \addcomma\newunit
        \iffieldundef{volume}
          {\iffieldundef{number}{}{vol.\addspace\printfield{number}\addcomma}}
          {\printfield{volume}}%
