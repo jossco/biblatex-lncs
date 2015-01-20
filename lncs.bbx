@@ -92,9 +92,15 @@
     }
 }
 
+\newbibmacro{proceedingstitle}{%
+  \iffieldundef{booktitle}
+    {\printfield{eventtitle}}
+    {\printfield{booktitle}}
+}
+
 \newbibmacro{acronym/booktitle}{%
   \iffieldundef{acronym}
-    {\printfield{booktitle}}
+    {\usebibmacro{proceedingstitle}}
     {\printfield{acronym}}%
     \addperiod\addspace
 }
@@ -189,7 +195,7 @@
   \iffieldundef{series}
     {\iftoggle{lncs:abbrev}
       {\usebibmacro{acronym/booktitle}}
-      {\printfield{booktitle}\newunit}%
+      {\usebibmacro{proceedingstitle}\newunit}%
     }%
     {\ifboolexpr{
         test {\iffieldequalstr{series}{LNAI}}
