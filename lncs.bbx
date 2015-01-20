@@ -82,7 +82,7 @@
     {\iffieldundef{year}
       {\iffieldundef{pubstate}
         {}
-        {\printfield{pubstate}}}
+        {(\printfield{pubstate})}}
       {\printfield{year}}}
     {\printfield{volume}%
       \iffieldundef{number}{}{(\printfield{number})}%
@@ -146,7 +146,7 @@
   \usebibmacro{journal}%
   \usebibmacro{journal:info}%
   \newunit\newblock
-  \usebibmacro{addendum+pubstate}%
+  \printfield{addendum}%
   \setunit{\bibpagerefpunct}\newblock
   \usebibmacro{pageref}%
   \newunit\newblock
