@@ -121,15 +121,25 @@
 \renewcommand{\labelnamepunct}{\addcolon\space}
 
 \DeclareNameFormat{author}{%
-  \ifblank{#5}{}{#5\space}#1, #4%
+  \nameparts{#1}%
+  \usebibmacro{name:family-given}
+          {\namepartfamily}
+          {\namepartgiveni}
+          {\namepartprefix}
+          {\namepartsuffix}
   \ifthenelse{\value{listcount}<\value{liststop}}
     {\addcomma\space}%
     {}%
 }
 
 \DeclareNameFormat{editor}{%
-  \ifblank{#5}{}{#5\space}#1, #4%
-  \ifthenelse{\value{listcount}<\value{liststop}}
+  \nameparts{#1}%
+  \usebibmacro{name:family-given}
+          {\namepartfamily}
+          {\namepartgiveni}
+          {\namepartprefix}
+          {\namepartsuffix}
+    \ifthenelse{\value{listcount}<\value{liststop}}
     {\addcomma\space}%
     {\space\ifthenelse{\value{listcount}>1}
       {(\bibstring{editors})}
