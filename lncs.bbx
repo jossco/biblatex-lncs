@@ -321,7 +321,18 @@
 }
 
 \DeclareBibliographyDriver{misc}{MISC}
-\DeclareBibliographyDriver{thesis}{THESIS}
+
+\DeclareBibliographyDriver{thesis}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \printnames{author}%
+  \setunit*{\addcolon\space}\newblock
+  \printfield{title}%
+  \newunit\newblock
+  \usebibmacro{institution+location+date}%
+  \usebibmacro{finentry}%
+}
+
 
 \DeclareBibliographyDriver{report}{%
   \usebibmacro{bibindex}%
