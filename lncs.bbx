@@ -82,7 +82,7 @@
     {\iffieldundef{year}
       {\iffieldundef{pubstate}
         {}
-        {\printfield{pubstate}}}
+        {(\printfield{pubstate})}}
       {\printfield{year}}}
     {\printfield{volume}%
       \iffieldundef{number}{}{(\printfield{number})}%
@@ -92,9 +92,15 @@
     }
 }
 
+\newbibmacro{proceedingstitle}{%
+  \iffieldundef{booktitle}
+    {\printfield{eventtitle}}
+    {\printfield{booktitle}}
+}
+
 \newbibmacro{acronym/booktitle}{%
   \iffieldundef{acronym}
-    {\printfield{booktitle}}
+    {\usebibmacro{proceedingstitle}}
     {\printfield{acronym}}%
     \addperiod\addspace
 }
@@ -115,15 +121,25 @@
 \renewcommand{\labelnamepunct}{\addcolon\space}
 
 \DeclareNameFormat{author}{%
-  \ifblank{#5}{}{#5\space}#1, #4%
+  \nameparts{#1}%
+  \usebibmacro{name:family-given}
+          {\namepartfamily}
+          {\namepartgiveni}
+          {\namepartprefix}
+          {\namepartsuffix}
   \ifthenelse{\value{listcount}<\value{liststop}}
     {\addcomma\space}%
     {}%
 }
 
 \DeclareNameFormat{editor}{%
-  \ifblank{#5}{}{#5\space}#1, #4%
-  \ifthenelse{\value{listcount}<\value{liststop}}
+  \nameparts{#1}%
+  \usebibmacro{name:family-given}
+          {\namepartfamily}
+          {\namepartgiveni}
+          {\namepartprefix}
+          {\namepartsuffix}
+    \ifthenelse{\value{listcount}<\value{liststop}}
     {\addcomma\space}%
     {\space\ifthenelse{\value{listcount}>1}
       {(\bibstring{editors})}
@@ -140,7 +156,7 @@
   \usebibmacro{journal}%
   \usebibmacro{journal:info}%
   \newunit\newblock
-  \usebibmacro{addendum+pubstate}%
+  \printfield{addendum}%
   \setunit{\bibpagerefpunct}\newblock
   \usebibmacro{pageref}%
   \newunit\newblock
@@ -148,6 +164,7 @@
     {\usebibmacro{related:init}%
      \usebibmacro{related}}
     {}%
+  \nopunct%
   \usebibmacro{finentry}%
 }
 
@@ -161,6 +178,7 @@
   \usebibmacro{title}%
   \newunit%
   \usebibmacro{publisher+location}%
+  \setunit{\addspace}
   \printfield{year}%
   \newunit\newblock
   \usebibmacro{addendum+pubstate}%
@@ -171,10 +189,11 @@
     {\usebibmacro{related:init}%
      \usebibmacro{related}}
     {}%
+  \nopunct%
   \usebibmacro{finentry}%
 }
 
-\newbibmacro{incoll/inproc}{%
+\DeclareBibliographyDriver{inproceedings}{%
   \usebibmacro{bibindex}%
   \usebibmacro{begentry}%
   \printnames{author}
@@ -187,7 +206,7 @@
   \iffieldundef{series}
     {\iftoggle{lncs:abbrev}
       {\usebibmacro{acronym/booktitle}}
-      {\printfield{booktitle}\newunit}%
+      {\usebibmacro{proceedingstitle}\newunit}%
     }%
     {\ifboolexpr{
         test {\iffieldequalstr{series}{LNAI}}
@@ -199,7 +218,7 @@
       {\settoggle{lncs:lncs}{true}%
        \usebibmacro{acronym/booktitle}%
        \printfield{series}
-       \newunit
+       \addcomma\newunit
        \iffieldundef{volume}
          {\iffieldundef{number}{}{vol.\addspace\printfield{number}\addcomma}}
          {\printfield{volume}}%
@@ -221,6 +240,7 @@
     {\usebibmacro{related:init}%
      \usebibmacro{related}}
     {}%
+  \nopunct%
   \usebibmacro{finentry}%
 }
 
@@ -255,8 +275,22 @@
     {\usebibmacro{related:init}%
      \usebibmacro{related}}
     {}%
+  \nopunct%
   \usebibmacro{finentry}%
 }
+
+\DeclareBibliographyDriver{unpublished}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \printnames{author}%
+  \setunit*{\addcolon\space}\newblock
+  \printfield{title}%
+  \newunit\newblock
+  \printfield{note}%
+  \usebibmacro{finentry}%
+}
+
+\DeclareFieldFormat{url}{\url{#1}}
 
 \DeclareBibliographyDriver{online}{%
   \usebibmacro{bibindex}%
@@ -264,7 +298,7 @@
   \usebibmacro{author/editor+others/translator+others}%
   \setunit*{\labelnamepunct}\newblock%
   \usebibmacro{title}%
-  \newunit
+  \addcomma\newunit
   \printlist{language}%
   \newunit\newblock
   \usebibmacro{byauthor}%
@@ -293,11 +327,23 @@
     {\usebibmacro{related:init}%
      \usebibmacro{related}}
     {}%
+  \nopunct%
   \usebibmacro{finentry}
 }
 
 \DeclareBibliographyDriver{misc}{MISC}
-\DeclareBibliographyDriver{thesis}{THESIS}
+
+\DeclareBibliographyDriver{thesis}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \printnames{author}%
+  \setunit*{\addcolon\space}\newblock
+  \printfield{title}%
+  \newunit\newblock
+  \usebibmacro{institution+location+date}%
+  \usebibmacro{finentry}%
+}
+
 
 \DeclareBibliographyDriver{report}{%
   \usebibmacro{bibindex}%
@@ -313,7 +359,7 @@
   \printfield{type}%
   \setunit*{\addspace}%
   \printfield{number}%
-  \newunit\newblock
+  \addcomma\newunit\newblock
   \printfield{version}%
   \newunit
   \printfield{note}%
@@ -327,8 +373,8 @@
     {}%
   \newunit\newblock
   \usebibmacro{institution+location+date}%
-  \newunit\newblock
-  \usebibmacro{doi+eprint+url}%
+  %\newunit\newblock
+  %\usebibmacro{doi+eprint+url}%
   \newunit\newblock
   \usebibmacro{addendum+pubstate}%
   \setunit{\bibpagerefpunct}\newblock
@@ -338,6 +384,7 @@
     {\usebibmacro{related:init}%
      \usebibmacro{related}}
     {}%
+  \nopunct%
   \usebibmacro{finentry}
 }
 
